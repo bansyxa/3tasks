@@ -1,33 +1,24 @@
-try:
-    students_results = []
-    total_average = 0
-    total_students = 0
-    for i in range(1,11):
-        try:
-            with open(f'input{i}.txt','r',encoding='utf-8') as file:
-                name = file.readline().strip()
-                print(name)
-                grades = file.readline().strip().split()
-                print(grades)
-                total = sum(float(grade) for grade in grades if grade != 'нб')
-                count = sum(1 for grade in grades if grade != 'нб')
-                average = total // count
-                students_results.append(f'{name}:{average:.2f}')
-                total_average += average
-                print(total_average)
-                total_students += 1
-            print(total_average)
-            print('Всего студентов:', total_students)
-            average_top = total_average / total_students
-            print(f"Общая успеваемость :{average_top:.2f}")
-        except ZeroDivisionError as e:
-            print('Деление на 0 невозможно')
+import random
+guessed_number = random.randint(1, 100)
+attemps = 0
+answers = set()
+print('Я загадал число от 1 до 100, попробуй угадать')
+while True:
+    attemps += 1
     try:
-        with open('output.txt','w',encoding='utf-8') as output_file:
-            output_file.write('\n'.join(students_results) + '\n')
-            output_file.write(f'Общ.средняя успеваемость: {average_top:.2f}')
-    except Exception as e:
-        print('Запись не удалась')
-except FileNotFoundError as e:
-    print('Файл не найден')
+        input_number = int(input(f'Попытка {attemps}. Введите число: '))
+        answers.add(input_number)
+    except ValueError as e:
+        print('сори бро')
+        continue
 
+    if input_number < guessed_number:
+        print('Больше')
+    elif input_number > guessed_number:
+        print('Меньше')
+    else:
+        print(f'Круто!Вы угадали число {input_number} за {attemps} попыток')
+        break
+
+with open('random.txt', 'w', encoding='utf-8') as file:
+    file.writelines(str(answers))
